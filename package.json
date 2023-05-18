@@ -1,9 +1,13 @@
 {
-  "name": "serverless-test",
+  "name": "sls-advent-template",
   "version": "1.0.0",
   "description": "",
   "dependencies": {
     "express": "^4.18.2",
-    "serverless-http": "^3.1.1"
+    "serverless-http": "^3.2.0",
+    "serverless-offline": "^12.0.4"
+  },
+  "devDependencies": {
+    "serverless-domain-manager": "^7.0.4"
   }
 }

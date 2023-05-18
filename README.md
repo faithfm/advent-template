@@ -1,106 +1,79 @@
-<!--
-title: 'Serverless Framework Node Express API on AWS'
-description: 'This template demonstrates how to develop and deploy a simple Node Express API running on AWS Lambda using the traditional Serverless Framework.'
-layout: Doc
-framework: v3
-platform: AWS
-language: nodeJS
-priority: 1
-authorLink: 'https://github.com/serverless'
-authorName: 'Serverless, inc.'
-authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
--->
+# Advent Services Template
 
-# Serverless Framework Node Express API on AWS
-
-This template demonstrates how to develop and deploy a simple Node Express API service running on AWS Lambda using the traditional Serverless Framework.
+This template is intended to serve as a baseline for deploying other **advent.services** apps.
 
 ## Anatomy of the template
 
-This template configures a single function, `api`, which is responsible for handling all incoming requests thanks to the `httpApi` event. To learn more about `httpApi` event configuration options, please refer to [httpApi event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api/). As the event is configured in a way to accept all incoming requests, `express` framework is responsible for routing and handling requests internally. Implementation takes advantage of `serverless-http` package, which allows you to wrap existing `express` applications. To learn more about `serverless-http`, please refer to corresponding [GitHub repository](https://github.com/dougmoscrop/serverless-http).
+The architecture used for **advent.services** includes the following characteristics:
 
-## Usage
+* Serverless Framework
+* Node Express API
+* Most will be Apollo GraphQL serverless - serverless-plugin-typescript
+* Deployed to AWS Lambda
+* es how to develop and deploy a simple Node Express API running on AWS Lambda using the traditional Serverless Framework.
 
-### Deployment
 
-Install dependencies with:
+## Naming:
+* Service: sls-advent-XXXX
+* Github repo: advent-XXXX
+* DNS: XXXX.advent.services   (+ XXXX-*dev*. and XXXX-*staging*.)
 
-```
-npm install
-```
 
-and then deploy with:
+## Project Configuration:
 
-```
-serverless deploy
-```
+The main things that need to be changed in the serverless.yml files are:
 
-After running deploy, you should see output similar to:
+* service: sls-advent-XXXXX     (ie: name of the service - will normally match XXXXX.advent.services domain name)
 
-```bash
-Deploying aws-node-express-api-project to stage dev (us-east-1)
+## Environment:
 
-✔ Service deployed to stack aws-node-express-api-project-dev (196s)
 
-endpoint: ANY - https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com
-functions:
-  api: aws-node-express-api-project-dev-api (766 kB)
-```
 
-_Note_: In current form, after deployment, your API is public and can be invoked by anyone. For production deployments, you might want to configure an authorizer. For details on how to do that, refer to [`httpApi` event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api/).
+Create 3x .env files:
 
-### Invocation
+* `.env.dev`
+* `.env.staging`
+* `.env.prod`
 
-After successful deployment, you can call the created application via HTTP:
+Each of these files should contain the following:   (sample typical for a **dev** stage)
 
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/
-```
+```env
+AWS_PROFILE=xxxxx
 
-Which should result in the following response:
+APP_URL=template-dev.advent.services
+
+MONGO_URI='mongodb+srv://template_dev:XXXXXX@template-dev.XXXXX.mongodb.net/?retryWrites=true&w=majority'
 
 ```
-{"message":"Hello from root!"}
+
+## AWS Configuration:
+
+It is recommended NOT to use the default AWS profile, but to use a separate one specifically for advent.services development.
+
+Sample `~/.aws/config` file:
+```
+[default]
+region=ap-southeast-2
+
+[profile advent]
+region=ap-southeast-2
+...
 ```
 
-Calling the `/hello` path with:
+Sample `~/.aws/credentials` file:
+```
+[default]
+aws_access_key_id=XXXX
+aws_secret_access_key=XXXX
 
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/hello
+[advent]
+aws_access_key_id=XXXX
+aws_secret_access_key=XXXX
+...
 ```
 
-Should result in the following response:
-
-```bash
-{"message":"Hello from path!"}
+In order to user this profile, the following setting would be required in the `.env.XXX` files:
+```env
+AWS_PROFILE=advent
 ```
 
-If you try to invoke a path or method that does not have a configured handler, e.g. with:
-
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/nonexistent
-```
-
-You should receive the following response:
-
-```bash
-{"error":"Not Found"}
-```
-
-### Local development
-
-It is also possible to emulate API Gateway and Lambda locally by using `serverless-offline` plugin. In order to do that, execute the following command:
-
-```bash
-serverless plugin install -n serverless-offline
-```
-
-It will add the `serverless-offline` plugin to `devDependencies` in `package.json` file as well as will add it to `plugins` in `serverless.yml`.
-
-After installation, you can start local emulation with:
-
-```
-serverless offline
-```
-
-To learn more about the capabilities of `serverless-offline`, please refer to its [GitHub repository](https://github.com/dherault/serverless-offline).
