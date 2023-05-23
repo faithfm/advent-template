@@ -1,0 +1,7 @@
+{
+  "headers": {
+    "content-type": "application/json"
+  },
+  "httpMethod": "GET",
+  "path": "/path"
+}

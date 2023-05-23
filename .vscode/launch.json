@@ -1,0 +1,49 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+
+    {
+      "name": "SLS Live Debug",
+      "request": "launch",
+      "runtimeArgs": [
+        "run-script",
+        "debug"
+      ],
+      "runtimeExecutable": "npm",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
+    },
+
+    {
+      "name": "SLS Invoke API",
+      "request": "launch",
+      "runtimeArgs": [
+        "run-script",
+        "invoke-api"
+      ],
+      "runtimeExecutable": "npm",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
+    },
+
+    {
+      "name": "SLS Invoke API (direct)",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/serverless/bin/serverless",
+      "args": [
+        "invoke",
+        "local",
+        "-f",
+        "api",
+        "-p",
+        "invoke-api-query.json"
+      ],
+      "type": "node",
+    }
+
+  ]
+}

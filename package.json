@@ -9,5 +9,11 @@
   },
   "devDependencies": {
     "serverless-domain-manager": "^7.0.4"
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/serverless offline -s dev",
+    "debug": "export SLS_DEBUG=* && node --inspect ./node_modules/.bin/serverless offline -s dev",
+    "invoke-api": "./node_modules/.bin/serverless invoke local -f api -s dev -p invoke-api-query.json",
+    "test": "mocha"
   }
 }
