@@ -2,13 +2,11 @@ version: "3.8"
 
 services:
     app:
-        container_name: app
-        image: app
+        image: "${APP_IMAGE_NAME}"
         restart: always
         build:
             context: .
             dockerfile: Dockerfile
-            # target: base
         ports:
-            - "${PORT}:${PORT}"
+            - "${DOCKER_PORT}:${DOCKER_PORT}"
 
